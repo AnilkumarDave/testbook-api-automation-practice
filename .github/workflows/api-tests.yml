@@ -26,5 +26,37 @@ jobs:
           java-version: '17'
           cache: maven
 
+      - name: Remove old Book API container
+        run: docker rm -f bookapi || true
+
+      - name: Checkout Book API
+        uses: actions/checkout@v4
+        with:
+          repository: kscorpio77/testbookapiworkflowdemo
+          ref: main
+          path: book-api
+
+      - name: Build Book API Docker image
+        run: docker build -t testbook-api:latest ./book-api
+
+      - name: Start Book API container
+        run: docker run -d --name bookapi -p 8080:8080 testbook-api:latest
+
+      - name: Wait for Book API readiness
+        run: |
+          for i in {1..30}; do
+            if curl --fail --silent http://localhost:8080/api/books > /dev/null; then
+              echo "Book API is ready!"
+              exit 0
+            fi
+
+            echo "Waiting for Book API... ($i/30)"
+            sleep 2
+          done
+
+          echo "Book API failed to start."
+          docker logs bookapi
+          exit 1
+
       - name: Run API tests
         run: mvn --batch-mode clean test -Dbase.url="${BASE_URL}"
