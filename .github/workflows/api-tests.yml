@@ -88,6 +88,12 @@ jobs:
           path: allure-report/
           if-no-files-found: warn
 
+
+      - name: Debug OIDC claims
+        uses: github/actions-oidc-debugger@main
+        with:
+          audience: sts.amazonaws.com
+
       - name: Configure AWS credentials
         if: always()
         uses: aws-actions/configure-aws-credentials@v4
@@ -95,13 +101,9 @@ jobs:
           role-to-assume: arn:aws:iam::074494041026:role/GitHubActionsTestbookS3Role
           aws-region: eu-north-1
 
-      - name: Debug OIDC claims
-        uses: github/actions-oidc-debugger@main
-        with:
-          audience: sts.amazonaws.com
 
-      - name: Upload reports to S3
-        if: always()
-        run: |
-          aws s3 sync allure-report/ s3://testbook-api-reports/allure-report/${{ github.run_id }}/
-          aws s3 sync allure-results/ s3://testbook-api-reports/allure-results/${{ github.run_id }}/
+    #  - name: Upload reports to S3
+     #   if: always()
+      #  run: |
+       #   aws s3 sync allure-report/ s3://testbook-api-reports/allure-report/${{ github.run_id }}/
+        #  aws s3 sync allure-results/ s3://testbook-api-reports/allure-results/${{ github.run_id }}/
