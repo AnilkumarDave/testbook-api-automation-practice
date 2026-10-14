@@ -95,6 +95,11 @@ jobs:
           role-to-assume: arn:aws:iam::074494041026:role/GitHubActionsTestbookS3Role
           aws-region: eu-north-1
 
+      - name: Debug OIDC claims
+        uses: github/actions-oidc-debugger@main
+        with:
+          audience: sts.amazonaws.com
+
       - name: Upload reports to S3
         if: always()
         run: |
