@@ -3,12 +3,17 @@ name: Testbook API tests
 on:
   push:
   workflow_dispatch:
+  
     inputs:
       base_url:
         description: Base URL of the already-running Testbook API
         required: false
         default: http://localhost:8080
         type: string
+
+  repository_dispatch:
+    types:
+      - book-api-build-success
 
 jobs:
   api-tests:
@@ -36,7 +41,7 @@ jobs:
       - name: Checkout Book API
         uses: actions/checkout@v4
         with:
-          repository: kscorpio77/testbookapiworkflowdemo
+                repository: AnilkumarDave/testbookapiworkflowdemo
           ref: main
           path: book-api
 
