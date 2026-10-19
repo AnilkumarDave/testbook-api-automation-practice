@@ -110,7 +110,7 @@ jobs:
           aws s3 sync allure-report/ s3://testbook-api-reports/allure-report/${{ github.run_id }}/
           aws s3 sync allure-results/ s3://testbook-api-reports/allure-results/${{ github.run_id }}/
 
-            - name: Notify application repository when tests pass
+      - name: Notify application repository when tests pass
         if: ${{ success() && github.event_name == 'repository_dispatch' && github.event.action == 'book-api-build-success' }}
         env:
           GH_TOKEN: ${{ secrets.APPLICATION_REPO_TOKEN }}
