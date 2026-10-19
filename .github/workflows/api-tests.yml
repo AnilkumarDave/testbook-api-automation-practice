@@ -41,7 +41,7 @@ jobs:
       - name: Checkout Book API
         uses: actions/checkout@v4
         with:
-                repository: AnilkumarDave/testbookapiworkflowdemo
+          repository: AnilkumarDave/testbookapiworkflowdemo
           ref: main
           path: book-api
 
